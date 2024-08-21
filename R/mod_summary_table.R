@@ -227,6 +227,7 @@ mod_summary_table_server <- function(id, dat) {
       evidence_map_data() |>
         dplyr::select(-id),
       options = list(
+        pageLength = -1,  # show all rows
         dom = "t",
         ordering = FALSE
       ),
