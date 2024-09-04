@@ -8,7 +8,7 @@ This shiny application will allow for the interactive exploration of the literat
 
 The application currently uses a dataset containing information about each evidence, such as author, publication date, and study characteristics. This information is then used to create an evidence map of all of the evidence as well as a free text search in order to search the evidence in the dataset by their title or author.
 
-This app was originally build off of [an evidence map for the New Hospital Programme](https://github.com/The-Strategy-Unit/nhp_evidence_maps).
+This app was originally built off of [an evidence map for the New Hospital Programme](https://github.com/The-Strategy-Unit/nhp_evidence_maps).
 
 Future plans for this application are:
 
@@ -40,10 +40,10 @@ board |> pins::pin_versions(pin_name)  # active and past versions
 # Read spreadsheet into list
 
 file <- "spreadsheet.xlsx"  # path to local copy of evidence map spreadsheet
-sheet_names <- readxl::excel_sheets(file)
+sheet_names <- readxl::excel_sheets(file)[1:2]  # 'About this map' and 'Datasheet' tabs
 
 sheets_list <- purrr::map(
-  sheet_names, 
+  sheet_names,
   \(x) suppressMessages(readxl::read_xlsx(file, sheet = x))
 ) |> 
   purrr::set_names(sheet_names)
@@ -52,7 +52,10 @@ sheets_list <- purrr::map(
 board |> pins::pin_write(
   sheets_list,
   pin_name,
-  metadata = list(notes = "A reminder of changes/reason for upload."),
+  metadata = list(
+    # update the notes (version/date from the 'About this map' tab)
+    notes = "Version X, Month YYYY, file 'spreadsheet.xlsx'"
+  ),
   type = "rds"  # otherwise it may autodetect json
 )
 
