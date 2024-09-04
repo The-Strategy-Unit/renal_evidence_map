@@ -20,6 +20,10 @@
 *.svg
 *.tiff
 
+# Files to retain
+!favicon.ico
+!tsu_logo_black_screen_transparent.png
+
 # History files
 .Rhistory
 .Rapp.history
