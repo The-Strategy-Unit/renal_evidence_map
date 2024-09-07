@@ -5,57 +5,86 @@
 #' @import shiny
 #' @noRd
 app_ui <- function(request) {
-
-  header <- bs4Dash::dashboardHeader(title = "Renal Evidence Map")
-
-  sidebar <- bs4Dash::dashboardSidebar(
-    fixed = TRUE,
-    skin = "light",
-    status = "primary",
-    bs4Dash::sidebarMenu(
-      id = "sidebarMenu",
-      bs4Dash::menuItem("About", tabName = "tab_about"),
-      bs4Dash::menuItem("Summarise Evidence", tabName = "tab_summary"),
-      bs4Dash::menuItem("Search Evidence", tabName = "tab_search")
-      # bs4Dash::menuItem("Taxonomy", tabName = "tab_taxonomy")  # TODO: temporarily disabled
-    )
-  )
-
-  body <- bs4Dash::dashboardBody(
-    bs4Dash::tabItems(
-      bs4Dash::tabItem(
-        tabName = "tab_about",
-        mod_about_ui("about")
-      ),
-      bs4Dash::tabItem(
-        tabName = "tab_summary",
-        mod_summary_table_ui("summary_table")
-      ),
-      bs4Dash::tabItem(
-        tabName = "tab_search",
-        mod_search_ui("search")
-      )#,
-      # bs4Dash::tabItem(  # TODO: temporarily disabled
-      #   tabName = "tab_taxonomy",
-      #   mod_taxonomy_ui("taxonomy")
-      # )
-    )
-  )
-
   shiny::tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    shinyjs::useShinyjs(),
-    bs4Dash::dashboardPage(
-      help = NULL,
-      dark = NULL,
-      header,
-      sidebar,
-      body
+    bslib::page_navbar(
+      id = "page_navbar",
+      title = "Generic evidence map",
+      bg = "#F8F9FA",
+      bslib::nav_panel(
+        id = "nav_panel_about",
+        title = "About",
+        bslib::card(
+          id = "card_about",
+          full_screen = TRUE,
+          htmltools::p("Placeholder")
+        )
+      ),
+      bslib::nav_panel(
+        id = "nav_panel_map",
+        title = "Evidence map",
+        bslib::card(
+          id = "card_evidence_map",
+          bslib::layout_sidebar(
+            sidebar = bslib::sidebar(
+              open = TRUE,
+              shiny::selectInput(
+                inputId = "select_row",
+                label = "Select row category",
+                choices = paste0("category_", c("x", "y", "z")),
+                selected = "category_x",
+                multiple = FALSE
+              ),
+              shiny::selectInput(
+                inputId = "select_column",
+                label = "Select column category",
+                choices = paste0("category_", c("x", "y", "z")),
+                selected = "category_y",
+                multiple = FALSE
+              ),
+              shiny::selectInput(
+                inputId = "select_years",
+                label = "Select years",
+                choices = NULL,
+                selected = "2010",
+                multiple = TRUE,
+              ),
+              actionButton(
+                inputId = "button_years_all",
+                label = "Select all"
+              ),
+              actionButton(
+                inputId = "button_years_clear",
+                label = "Clear"
+              )
+            ),
+            bslib::layout_column_wrap(
+              bslib::card(
+                id = "card_evidence_map_table",
+                full_screen = TRUE,
+                bslib::card_header("Evidence map", class = "bg-light"),
+                DT::DTOutput(outputId = "evidence_map_table")
+              ),
+              bslib::card(
+                id = "card_waffle",
+                full_screen = TRUE,
+                bslib::card_header("Waffle", class = "bg-light"),
+                shiny::plotOutput(outputId = "waffle")
+              )
+            ),
+            bslib::card(
+              id = "card_filtered_table",
+              full_screen = TRUE,
+              bslib::card_header("Filtered table", class = "bg-light"),
+              DT::DTOutput(outputId = "filtered_table")
+            )
+          )
+        )
+      )
     )
   )
-
 }
 
 #' Add external Resources to the Application
