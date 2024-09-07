@@ -1,31 +1,28 @@
 Package: renal.evidence.map
 Title: Renal Evidence Map App
-Version: 0.0.0.9000
-Authors@R: 
-    person("Ozayr", "Mohammed", , "ozayr.mohammed@nhs.net", role = c("cre", "aut"))
+Version: 0.1.0
+Authors@R: c(
+    person("Ozayr", "Mohammed", , "ozayr.mohammed@nhs.net", role = c("cre", "aut")),
+    person("Matt", "Dray", , "matt.dray@nhs.net", role = "aut")
+  )
 Description: A Shiny app for exploring renal evidence.
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
 Imports: 
-    bs4Dash,
+    bslib,
     config (>= 0.3.1),
     dplyr,
     DT,
-    forcats,
     ggplot2,
     ggwaffle,
+    glue,
     golem (>= 0.4.0),
-    gt,
-    janitor,
-    maps,
+    htmltools,
+    markdown,
     pins,
-    pkgload,
     purrr,
     shiny (>= 1.7.4),
-    shinyjs,
-    shinyWidgets,
-    stringdist,
     stringr,
     tidyr,
     tidyselect,

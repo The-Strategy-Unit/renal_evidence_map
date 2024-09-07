@@ -11,15 +11,28 @@ app_ui <- function(request) {
     # Your application UI logic
     bslib::page_navbar(
       id = "page_navbar",
-      title = "Generic evidence map",
+      title = "Evidence to Inform Renal Services Modelling",
       bg = "#F8F9FA",
       bslib::nav_panel(
-        id = "nav_panel_about",
-        title = "About",
-        bslib::card(
-          id = "card_about",
-          full_screen = TRUE,
-          htmltools::p("Placeholder")
+        id = "nav_panel_info",
+        title = "Information",
+        bslib::layout_column_wrap(
+          bslib::card(
+            id = "card_intro",
+            full_screen = TRUE,
+            bslib::card_header("Introduction", class = "bg-light"),
+            tags$img(
+              src = "www/tsu_logo_black_screen_transparent.png",
+              style = "height:91px;width:108px"
+            ),
+            shiny::textOutput("intro")
+          ),
+          bslib::card(
+            id = "card_how_to",
+            full_screen = TRUE,
+            bslib::card_header("How to use", class = "bg-light"),
+            htmltools::p("Placeholder")
+          )
         )
       ),
       bslib::nav_panel(
@@ -33,22 +46,22 @@ app_ui <- function(request) {
               shiny::selectInput(
                 inputId = "select_row",
                 label = "Select row category",
-                choices = paste0("category_", c("x", "y", "z")),
-                selected = "category_x",
+                choices = NULL,
+                selected = NULL,
                 multiple = FALSE
               ),
               shiny::selectInput(
                 inputId = "select_column",
                 label = "Select column category",
-                choices = paste0("category_", c("x", "y", "z")),
-                selected = "category_y",
+                choices = NULL,
+                selected = NULL,
                 multiple = FALSE
               ),
               shiny::selectInput(
                 inputId = "select_years",
                 label = "Select years",
                 choices = NULL,
-                selected = "2010",
+                selected = NULL,
                 multiple = TRUE,
               ),
               actionButton(
@@ -70,17 +83,49 @@ app_ui <- function(request) {
               bslib::card(
                 id = "card_waffle",
                 full_screen = TRUE,
-                bslib::card_header("Waffle", class = "bg-light"),
+                bslib::card_header("Waffle chart", class = "bg-light"),
                 shiny::plotOutput(outputId = "waffle")
               )
             ),
             bslib::card(
               id = "card_filtered_table",
               full_screen = TRUE,
-              bslib::card_header("Filtered table", class = "bg-light"),
+              bslib::card_header(
+                "Filtered publications",
+                class = "bg-light"
+              ),
               DT::DTOutput(outputId = "filtered_table")
             )
           )
+        )
+      ),
+      bslib::nav_panel(
+        id = "nav_panel_search",
+        title = "Search",
+        bslib::card(
+          id = "card_search",
+          full_screen = TRUE,
+          DT::DTOutput("search_table")
+        )
+      ),
+      bslib::nav_panel(
+        id = "nav_panel_taxonomy",
+        title = "Taxonomy",
+        bslib::card(
+          id = "card_taxonomy",
+          htmltools::h2("Theme categories"),
+          shiny::tableOutput("taxonomy_theme"),
+          htmltools::h2("Focus categories"),
+          shiny::tableOutput("taxonomy_focus"),
+          htmltools::h2("Setting"),
+          shiny::tableOutput("taxonomy_setting"),
+          htmltools::h2("Evidence type"),
+          shiny::tableOutput("taxonomy_evidence_type"),
+          htmltools::h2("Clinical conditions"),
+          shiny::tableOutput("taxonomy_clinical"),
+          htmltools::h2("High-level outcome categories"),
+          shiny::textOutput("taxonomy_high_level_preamble"),
+          shiny::tableOutput("taxonomy_high_level_outcome")
         )
       )
     )
@@ -105,7 +150,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "evidence_maps"
+      app_title = "renal_evidence_map"
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()

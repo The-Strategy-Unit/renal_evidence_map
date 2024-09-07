@@ -6,26 +6,31 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-  # Demo data
+  # Data
 
-  set.seed(123)
-  n <- 500
-  gen_cats <- \(cat, range = 1:5, n) sample(paste0(cat, range), n, TRUE)
-  dat <- tibble::tibble(
-    year = sample(paste0("20", 10:24), n, replace = TRUE),
-    category_x = gen_cats("x", 1:5, n),
-    category_y = gen_cats("y", 1:4, n),
-    category_z = gen_cats("z", 1:9, n)
+  pinned_data <- get_pinned_data("matt.dray/renal_evidence_map_data")
+
+  taxonomy <- pinned_data[["About this map"]]
+
+  dat <- get_evidence_data(pinned_data) |>
+    dplyr::rename(  # the waffle errors without this
+      "type_of_evidence" = "Type of evidence",
+      "high_level_outcomes" = "High level outcomes",
+      "focus_simplified" = "Focus (simplified)"
+    )
+
+  taxonomy <- get_taxonomy_tables(pinned_data)
+
+  all_categories <- c(
+    "Focus (simplified)" = "focus_simplified",  # row category default
+    "Type of evidence" = "type_of_evidence",  # column category default
+    "High level outcomes" = "high_level_outcomes"
   )
 
   # Selection reactives
 
-  all_categories <- shiny::reactive({
-    dat[, names(dat) != "year"] |> names() |> sort()
-  })
-
   all_years <- shiny::reactive({
-    dat$year |>
+    dat$`Publication year` |>
       unique() |>
       sort(decreasing = TRUE)  # latest first
   })
@@ -64,12 +69,28 @@ app_server <- function(input, output, session) {
   shiny::observe({
     shiny::updateSelectInput(
       inputId = "select_row",
-      choices = all_categories()[all_categories() != selected_column()],
+      choices = all_categories,
+      selected = all_categories[1]
+    )
+  })
+
+  shiny::observe({
+    shiny::updateSelectInput(
+      inputId = "select_column",
+      choices = all_categories,
+      selected = all_categories[2]
+    )
+  })
+
+  shiny::observe({
+    shiny::updateSelectInput(
+      inputId = "select_row",
+      choices = all_categories[all_categories != selected_column()],
       selected = selected_row()
     )
     shiny::updateSelectInput(
       inputId = "select_column",
-      choices = all_categories()[all_categories() != selected_row()],
+      choices = all_categories[all_categories != selected_row()],
       selected = selected_column()
     )
   })
@@ -107,7 +128,7 @@ app_server <- function(input, output, session) {
   # Data prep
 
   filtered_data <- reactive({
-    dat |> dplyr::filter(year %in% input$select_years)
+    dat |> dplyr::filter(`Publication year` %in% input$select_years)
   })
 
   counted_data <- reactive({
@@ -125,7 +146,7 @@ app_server <- function(input, output, session) {
       ) |>
       dplyr::mutate(
         dplyr::across(
-          dplyr::everything(),
+          tidyselect::everything(),
           \(x) tidyr::replace_na(x, 0)
         )
       ) |>
@@ -134,18 +155,22 @@ app_server <- function(input, output, session) {
 
     dat_prepared |>
       dplyr::select(order(names(dat_prepared))) |>
-      dplyr::rename(!!rlang::sym(selected_row()) := "aaa")  # revert column name
+      dplyr::rename(" " = "aaa")  # remove column name
 
   })
 
   # Outputs
+
+  output$intro <- shiny::renderText({
+    get_intro(pinned_data)
+  })
 
   output$evidence_map_table <- DT::renderDT({
 
     shiny::validate(
       shiny::need(
         input$select_years,
-        message = "Select at least one year."
+        message = "Select at least one publication year."
       )
     )
 
@@ -172,7 +197,7 @@ app_server <- function(input, output, session) {
     shiny::validate(
       shiny::need(
         input$select_years,
-        message = "Select at least one year."
+        message = "Select at least one publication year."
       )
     )
 
@@ -189,7 +214,7 @@ app_server <- function(input, output, session) {
     row_filtered_data |>
       ggwaffle::waffle_iron(
         mapping = selected_column(),
-        rows = floor(sqrt(nrow(row_filtered_data)))
+        rows = floor(sqrt(nrow(row_filtered_data)))  # prevents error
       ) |>
       ggplot2::ggplot(ggplot2::aes(x, y, fill = group)) +
       ggwaffle::geom_waffle() +
@@ -232,12 +257,77 @@ app_server <- function(input, output, session) {
         .data[[selected_row()]] == row_category_value(),
         .data[[selected_column()]] == column_category_value()
       ) |>
+      dplyr::select("Authors", "Title", "Publication year", "Link") |>
+      dplyr::arrange("Publication year") |>
       DT::datatable(
         style = "default",
         class = "stripe",
         rownames = FALSE,
-        selection = "none"
+        selection = "none",
+        escape = FALSE
       )
+
+  })
+
+  output$search_table <- DT::renderDT({
+    dat |>
+      dplyr::rename(  # because the waffle errored unless dat names were changed
+        "Focus (simplified)" = "focus_simplified",
+        "Type of evidence" = "type_of_evidence",
+        "High level outcomes" = "high_level_outcomes"
+      ) |>
+      dplyr::select(-"Abstract") |>
+      dplyr::mutate(
+        dplyr::across(
+          c(
+            "Publication year",
+            "Journal",
+            "Type of evidence",
+            "High level outcomes",
+            "Focus of the paper",
+            "Focus (simplified)",
+            "Setting",
+          ),
+          factor  # allows discrete dropdown in datatable
+        )
+      ) |>
+      DT::datatable(
+        style = "default",
+        class = "stripe",
+        rownames = FALSE,
+        selection = "none",
+        escape = FALSE,
+        filter = list(position = "top"),
+        options = list(search = list(regex = TRUE))
+      )
+  })
+
+  output$taxonomy_theme <- shiny::renderTable({
+    taxonomy[["Theme categories"]]
+  })
+
+  output$taxonomy_focus <- shiny::renderTable({
+    taxonomy[["Focus categories"]]
+  })
+
+  output$taxonomy_setting <- shiny::renderTable({
+    taxonomy[["Setting"]]
+  })
+
+  output$taxonomy_evidence_type <- shiny::renderTable({
+    taxonomy[["Evidence type"]]
+  })
+
+  output$taxonomy_clinical <- shiny::renderTable({
+    taxonomy[["Clinical conditions"]]
+  })
+
+  output$taxonomy_high_level_preamble <- shiny::renderText({
+    taxonomy[["High-level outcome preamble"]]
+  })
+
+  output$taxonomy_high_level_outcome <- shiny::renderTable({
+    taxonomy[["High-level outcome categories"]]
   })
 
 }
