@@ -56,21 +56,39 @@ app_ui <- function(request) {
               open = TRUE,
               shiny::selectInput(
                 inputId = "select_row",
-                label = "Select row category",
+                label = bslib::tooltip(
+                  trigger = list(
+                    "Select row category",
+                    bsicons::bs_icon("info-circle")
+                  ),
+                  "The grouping category to show in the rows of the evidence map."
+                ),
                 choices = NULL,
                 selected = NULL,
                 multiple = FALSE
               ),
               shiny::selectInput(
                 inputId = "select_column",
-                label = "Select column category",
+                label = bslib::tooltip(
+                  trigger = list(
+                    "Select column category",
+                    bsicons::bs_icon("info-circle")
+                  ),
+                  "The grouping category to show in the columns of the evidence map."
+                ),
                 choices = NULL,
                 selected = NULL,
                 multiple = FALSE
               ),
               shiny::selectInput(
                 inputId = "select_years",
-                label = "Select years",
+                label = bslib::tooltip(
+                  trigger = list(
+                    "Select years",
+                    bsicons::bs_icon("info-circle")
+                  ),
+                  "Filter for evidence from selected years. Use the buttons below to select or clear all years."
+                ),
                 choices = NULL,
                 selected = NULL,
                 multiple = TRUE,
