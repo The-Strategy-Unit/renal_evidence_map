@@ -14,9 +14,10 @@ app_ui <- function(request) {
       title = "Evidence to Inform Renal Services Modelling",
       bg = "#F8F9FA",
       bslib::nav_panel(
-        id = "nav_panel_info",
-        title = "Information",
+        id = "nav_panel_about",
+        title = "About",
         bslib::layout_column_wrap(
+          width = 1/2,
           bslib::card(
             id = "card_intro",
             full_screen = TRUE,
@@ -27,11 +28,21 @@ app_ui <- function(request) {
             ),
             shiny::textOutput("intro")
           ),
-          bslib::card(
-            id = "card_how_to",
-            full_screen = TRUE,
-            bslib::card_header("How to use", class = "bg-light"),
-            htmltools::p("Placeholder")
+          bslib::layout_column_wrap(
+            width = 1,
+            heights_equal = "row",
+            bslib::card(
+              id = "card_how_to",
+              full_screen = TRUE,
+              bslib::card_header("How to use", class = "bg-light"),
+              md_file_to_html("app", "text", "about-how-to.md")
+            ),
+            bslib::card(
+              id = "card_meta",
+              full_screen = TRUE,
+              bslib::card_header("Meta information", class = "bg-light"),
+              md_file_to_html("app", "text", "about-meta.md")
+            )
           )
         )
       ),
