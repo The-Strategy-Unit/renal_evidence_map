@@ -14,9 +14,10 @@ app_ui <- function(request) {
       title = "Evidence to Inform Renal Services Modelling",
       bg = "#F8F9FA",
       bslib::nav_panel(
-        id = "nav_panel_info",
-        title = "Information",
+        id = "nav_panel_about",
+        title = "About",
         bslib::layout_column_wrap(
+          width = 1/2,
           bslib::card(
             id = "card_intro",
             full_screen = TRUE,
@@ -27,11 +28,21 @@ app_ui <- function(request) {
             ),
             shiny::textOutput("intro")
           ),
-          bslib::card(
-            id = "card_how_to",
-            full_screen = TRUE,
-            bslib::card_header("How to use", class = "bg-light"),
-            htmltools::p("Placeholder")
+          bslib::layout_column_wrap(
+            width = 1,
+            heights_equal = "row",
+            bslib::card(
+              id = "card_how_to",
+              full_screen = TRUE,
+              bslib::card_header("How to use", class = "bg-light"),
+              md_file_to_html("app", "text", "about-how-to.md")
+            ),
+            bslib::card(
+              id = "card_meta",
+              full_screen = TRUE,
+              bslib::card_header("Meta information", class = "bg-light"),
+              md_file_to_html("app", "text", "about-meta.md")
+            )
           )
         )
       ),
@@ -45,21 +56,39 @@ app_ui <- function(request) {
               open = TRUE,
               shiny::selectInput(
                 inputId = "select_row",
-                label = "Select row category",
+                label = bslib::tooltip(
+                  trigger = list(
+                    "Select row category",
+                    bsicons::bs_icon("info-circle")
+                  ),
+                  "The grouping category to show in the rows of the evidence map."
+                ),
                 choices = NULL,
                 selected = NULL,
                 multiple = FALSE
               ),
               shiny::selectInput(
                 inputId = "select_column",
-                label = "Select column category",
+                label = bslib::tooltip(
+                  trigger = list(
+                    "Select column category",
+                    bsicons::bs_icon("info-circle")
+                  ),
+                  "The grouping category to show in the columns of the evidence map."
+                ),
                 choices = NULL,
                 selected = NULL,
                 multiple = FALSE
               ),
               shiny::selectInput(
                 inputId = "select_years",
-                label = "Select years",
+                label = bslib::tooltip(
+                  trigger = list(
+                    "Select years",
+                    bsicons::bs_icon("info-circle")
+                  ),
+                  "Filter for evidence from selected years. Use the buttons below to select or clear all years."
+                ),
                 choices = NULL,
                 selected = NULL,
                 multiple = TRUE,

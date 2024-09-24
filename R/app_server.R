@@ -242,7 +242,7 @@ app_server <- function(input, output, session) {
     shiny::validate(
       shiny::need(
         input$select_years,
-        message = "Select at least one year."
+        message = "Select at least one publication year."
       )
     )
 
