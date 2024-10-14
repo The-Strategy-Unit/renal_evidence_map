@@ -17,7 +17,7 @@ app_ui <- function(request) {
       bslib::nav_panel(
         id = "nav_panel_about",
         title = "About",
-        mod_about_ui("about")
+        mod_about_ui("mod_about")
       ),
 
       bslib::nav_panel(
@@ -114,22 +114,7 @@ app_ui <- function(request) {
       bslib::nav_panel(
         id = "nav_panel_taxonomy",
         title = "Taxonomy",
-        bslib::card(
-          id = "card_taxonomy",
-          htmltools::h2("Theme categories"),
-          shiny::tableOutput("taxonomy_theme"),
-          htmltools::h2("Focus categories"),
-          shiny::tableOutput("taxonomy_focus"),
-          htmltools::h2("Setting"),
-          shiny::tableOutput("taxonomy_setting"),
-          htmltools::h2("Evidence type"),
-          shiny::tableOutput("taxonomy_evidence_type"),
-          htmltools::h2("Clinical conditions"),
-          shiny::tableOutput("taxonomy_clinical"),
-          htmltools::h2("High-level outcome categories"),
-          shiny::textOutput("taxonomy_high_level_preamble"),
-          shiny::tableOutput("taxonomy_high_level_outcome")
-        )
+        mod_taxonomy_ui("mod_taxonomy")
       )
     )
   )

@@ -61,7 +61,7 @@ mod_about_server <- function(id, pinned_data) {
 }
 
 ## To be copied in the UI
-# mod_about_ui("about_1")
+# mod_about_ui("mod_about")
 
 ## To be copied in the server
-# mod_about_server("about_1")
+# mod_about_server("mod_about")

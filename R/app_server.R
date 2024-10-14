@@ -161,8 +161,6 @@ app_server <- function(input, output, session) {
 
   # Outputs
 
-  mod_about_server("about", pinned_data)
-
   output$evidence_map_table <- DT::renderDT({
 
     shiny::validate(
@@ -300,32 +298,9 @@ app_server <- function(input, output, session) {
       )
   })
 
-  output$taxonomy_theme <- shiny::renderTable({
-    taxonomy[["Theme categories"]]
-  })
+  # Modules
 
-  output$taxonomy_focus <- shiny::renderTable({
-    taxonomy[["Focus categories"]]
-  })
-
-  output$taxonomy_setting <- shiny::renderTable({
-    taxonomy[["Setting"]]
-  })
-
-  output$taxonomy_evidence_type <- shiny::renderTable({
-    taxonomy[["Evidence type"]]
-  })
-
-  output$taxonomy_clinical <- shiny::renderTable({
-    taxonomy[["Clinical conditions"]]
-  })
-
-  output$taxonomy_high_level_preamble <- shiny::renderText({
-    taxonomy[["High-level outcome preamble"]]
-  })
-
-  output$taxonomy_high_level_outcome <- shiny::renderTable({
-    taxonomy[["High-level outcome categories"]]
-  })
+  mod_about_server("mod_about", pinned_data)
+  mod_taxonomy_server("mod_taxonomy", taxonomy)
 
 }
