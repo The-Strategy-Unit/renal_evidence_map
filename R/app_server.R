@@ -265,42 +265,10 @@ app_server <- function(input, output, session) {
 
   })
 
-  output$search_table <- DT::renderDT({
-    dat |>
-      dplyr::rename(  # because the waffle errored unless dat names were changed
-        "Focus (simplified)" = "focus_simplified",
-        "Type of evidence" = "type_of_evidence",
-        "High level outcomes" = "high_level_outcomes"
-      ) |>
-      dplyr::select(-"Abstract") |>
-      dplyr::mutate(
-        dplyr::across(
-          c(
-            "Publication year",
-            "Journal",
-            "Type of evidence",
-            "High level outcomes",
-            "Focus of the paper",
-            "Focus (simplified)",
-            "Setting",
-          ),
-          factor  # allows discrete dropdown in datatable
-        )
-      ) |>
-      DT::datatable(
-        style = "default",
-        class = "stripe",
-        rownames = FALSE,
-        selection = "none",
-        escape = FALSE,
-        filter = list(position = "top"),
-        options = list(search = list(regex = TRUE))
-      )
-  })
-
   # Modules
 
   mod_about_server("mod_about", pinned_data)
+  mod_search_server("mod_search", dat)
   mod_taxonomy_server("mod_taxonomy", taxonomy)
 
 }

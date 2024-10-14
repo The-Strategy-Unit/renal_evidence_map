@@ -13,13 +13,11 @@ app_ui <- function(request) {
       id = "page_navbar",
       title = "Evidence to Inform Renal Services Modelling",
       bg = "#F8F9FA",
-
       bslib::nav_panel(
         id = "nav_panel_about",
         title = "About",
         mod_about_ui("mod_about")
       ),
-
       bslib::nav_panel(
         id = "nav_panel_map",
         title = "Evidence map",
@@ -105,11 +103,7 @@ app_ui <- function(request) {
       bslib::nav_panel(
         id = "nav_panel_search",
         title = "Search",
-        bslib::card(
-          id = "card_search",
-          full_screen = TRUE,
-          DT::DTOutput("search_table")
-        )
+        mod_search_ui("mod_search")
       ),
       bslib::nav_panel(
         id = "nav_panel_taxonomy",
