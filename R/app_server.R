@@ -161,9 +161,7 @@ app_server <- function(input, output, session) {
 
   # Outputs
 
-  output$intro <- shiny::renderText({
-    get_intro(pinned_data)
-  })
+  mod_about_server("about", pinned_data)
 
   output$evidence_map_table <- DT::renderDT({
 

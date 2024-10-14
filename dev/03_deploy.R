@@ -42,18 +42,16 @@ rhub::check_for_cran()
 # Deploy to Posit Connect or ShinyApps.io
 # In command line.
 rsconnect::deployApp(
-  appName = "renal.evidence.map",
-  appTitle = "Renal Evidence Map",
   appFiles = c(
     # Add any additional files unique to your app here.
     "R/",
     "inst/",
-    "data/",
+    # "data/",
     "NAMESPACE",
     "DESCRIPTION",
     "app.R"
   ),
-  appId = rsconnect::deployments(".")$appID,
+  appId = 306,
   lint = FALSE,
   forceUpdate = TRUE
 )

@@ -13,39 +13,13 @@ app_ui <- function(request) {
       id = "page_navbar",
       title = "Evidence to Inform Renal Services Modelling",
       bg = "#F8F9FA",
+
       bslib::nav_panel(
         id = "nav_panel_about",
         title = "About",
-        bslib::layout_column_wrap(
-          width = 1/2,
-          bslib::card(
-            id = "card_intro",
-            full_screen = TRUE,
-            bslib::card_header("Introduction", class = "bg-light"),
-            tags$img(
-              src = "www/tsu_logo_black_screen_transparent.png",
-              style = "height:91px;width:108px"
-            ),
-            shiny::textOutput("intro")
-          ),
-          bslib::layout_column_wrap(
-            width = 1,
-            heights_equal = "row",
-            bslib::card(
-              id = "card_how_to",
-              full_screen = TRUE,
-              bslib::card_header("How to use", class = "bg-light"),
-              md_file_to_html("app", "text", "about-how-to.md")
-            ),
-            bslib::card(
-              id = "card_meta",
-              full_screen = TRUE,
-              bslib::card_header("Meta information", class = "bg-light"),
-              md_file_to_html("app", "text", "about-meta.md")
-            )
-          )
-        )
+        mod_about_ui("about")
       ),
+
       bslib::nav_panel(
         id = "nav_panel_map",
         title = "Evidence map",
