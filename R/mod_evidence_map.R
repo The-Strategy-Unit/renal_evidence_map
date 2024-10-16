@@ -209,7 +209,7 @@ mod_evidence_map_server <- function(id, dat) {
     })
 
     selected_years <- shiny::reactive({
-      shiny::req(input$select_year)
+      shiny::req(input$select_years)
       input$select_years
     })
 
