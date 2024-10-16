@@ -51,7 +51,7 @@ rsconnect::deployApp(
     "DESCRIPTION",
     "app.R"
   ),
-  appId = 306,
+  appId = rsconnect::deployments(".")$appID,
   lint = FALSE,
   forceUpdate = TRUE
 )
