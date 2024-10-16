@@ -68,8 +68,3 @@ mod_search_server <- function(id, dat) {
   })
 }
 
-## To be copied in the UI
-# mod_search_ui("mod_search")
-
-## To be copied in the server
-# mod_search_server("mod_search")

@@ -70,8 +70,3 @@ mod_taxonomy_server <- function(id, taxonomy) {
   })
 }
 
-## To be copied in the UI
-# mod_taxonomy_ui("mod_taxonomy")
-
-## To be copied in the server
-# mod_taxonomy_server("mod_taxonomy")
