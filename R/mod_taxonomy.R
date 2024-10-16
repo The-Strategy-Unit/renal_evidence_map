@@ -5,11 +5,9 @@
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-#'
-#' @importFrom shiny NS tagList
 mod_taxonomy_ui <- function(id) {
 
-  ns <- NS(id)
+  ns <- shiny::NS(id)
 
   shiny::tagList(
     bslib::card(
