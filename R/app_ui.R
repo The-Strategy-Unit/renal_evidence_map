@@ -5,160 +5,44 @@
 #' @import shiny
 #' @noRd
 app_ui <- function(request) {
+
+  nav_panel_about <- bslib::nav_panel(
+    id = "nav_panel_about",
+    title = "About",
+    mod_about_ui("mod_about")
+  )
+
+  nav_panel_map <- bslib::nav_panel(
+    id = "nav_panel_map",
+    title = "Evidence map",
+    mod_evidence_map_ui("mod_evidence_map")
+  )
+
+  nav_panel_search <- bslib::nav_panel(
+    id = "nav_panel_search",
+    title = "Search",
+    mod_search_ui("mod_search")
+  )
+
+  nav_panel_taxonomy <- bslib::nav_panel(
+    id = "nav_panel_taxonomy",
+    title = "Taxonomy",
+    mod_taxonomy_ui("mod_taxonomy")
+  )
+
   shiny::tagList(
-    # Leave this function for adding external resources
     golem_add_external_resources(),
-    # Your application UI logic
     bslib::page_navbar(
       id = "page_navbar",
       title = "Evidence to Inform Renal Services Modelling",
       bg = "#F8F9FA",
-      bslib::nav_panel(
-        id = "nav_panel_about",
-        title = "About",
-        bslib::layout_column_wrap(
-          width = 1/2,
-          bslib::card(
-            id = "card_intro",
-            full_screen = TRUE,
-            bslib::card_header("Introduction", class = "bg-light"),
-            tags$img(
-              src = "www/tsu_logo_black_screen_transparent.png",
-              style = "height:91px;width:108px"
-            ),
-            shiny::textOutput("intro")
-          ),
-          bslib::layout_column_wrap(
-            width = 1,
-            heights_equal = "row",
-            bslib::card(
-              id = "card_how_to",
-              full_screen = TRUE,
-              bslib::card_header("How to use", class = "bg-light"),
-              md_file_to_html("app", "text", "about-how-to.md")
-            ),
-            bslib::card(
-              id = "card_meta",
-              full_screen = TRUE,
-              bslib::card_header("Meta information", class = "bg-light"),
-              md_file_to_html("app", "text", "about-meta.md")
-            )
-          )
-        )
-      ),
-      bslib::nav_panel(
-        id = "nav_panel_map",
-        title = "Evidence map",
-        bslib::card(
-          id = "card_evidence_map",
-          bslib::layout_sidebar(
-            sidebar = bslib::sidebar(
-              open = TRUE,
-              shiny::selectInput(
-                inputId = "select_row",
-                label = bslib::tooltip(
-                  trigger = list(
-                    "Select row category",
-                    bsicons::bs_icon("info-circle")
-                  ),
-                  "The grouping category to show in the rows of the evidence map."
-                ),
-                choices = NULL,
-                selected = NULL,
-                multiple = FALSE
-              ),
-              shiny::selectInput(
-                inputId = "select_column",
-                label = bslib::tooltip(
-                  trigger = list(
-                    "Select column category",
-                    bsicons::bs_icon("info-circle")
-                  ),
-                  "The grouping category to show in the columns of the evidence map."
-                ),
-                choices = NULL,
-                selected = NULL,
-                multiple = FALSE
-              ),
-              shiny::selectInput(
-                inputId = "select_years",
-                label = bslib::tooltip(
-                  trigger = list(
-                    "Select years",
-                    bsicons::bs_icon("info-circle")
-                  ),
-                  "Filter for evidence from selected years. Use the buttons below to select or clear all years."
-                ),
-                choices = NULL,
-                selected = NULL,
-                multiple = TRUE,
-              ),
-              actionButton(
-                inputId = "button_years_all",
-                label = "Select all"
-              ),
-              actionButton(
-                inputId = "button_years_clear",
-                label = "Clear"
-              )
-            ),
-            bslib::layout_column_wrap(
-              bslib::card(
-                id = "card_evidence_map_table",
-                full_screen = TRUE,
-                bslib::card_header("Evidence map", class = "bg-light"),
-                DT::DTOutput(outputId = "evidence_map_table")
-              ),
-              bslib::card(
-                id = "card_waffle",
-                full_screen = TRUE,
-                bslib::card_header("Waffle chart", class = "bg-light"),
-                shiny::plotOutput(outputId = "waffle")
-              )
-            ),
-            bslib::card(
-              id = "card_filtered_table",
-              full_screen = TRUE,
-              bslib::card_header(
-                "Filtered publications",
-                class = "bg-light"
-              ),
-              DT::DTOutput(outputId = "filtered_table")
-            )
-          )
-        )
-      ),
-      bslib::nav_panel(
-        id = "nav_panel_search",
-        title = "Search",
-        bslib::card(
-          id = "card_search",
-          full_screen = TRUE,
-          DT::DTOutput("search_table")
-        )
-      ),
-      bslib::nav_panel(
-        id = "nav_panel_taxonomy",
-        title = "Taxonomy",
-        bslib::card(
-          id = "card_taxonomy",
-          htmltools::h2("Theme categories"),
-          shiny::tableOutput("taxonomy_theme"),
-          htmltools::h2("Focus categories"),
-          shiny::tableOutput("taxonomy_focus"),
-          htmltools::h2("Setting"),
-          shiny::tableOutput("taxonomy_setting"),
-          htmltools::h2("Evidence type"),
-          shiny::tableOutput("taxonomy_evidence_type"),
-          htmltools::h2("Clinical conditions"),
-          shiny::tableOutput("taxonomy_clinical"),
-          htmltools::h2("High-level outcome categories"),
-          shiny::textOutput("taxonomy_high_level_preamble"),
-          shiny::tableOutput("taxonomy_high_level_outcome")
-        )
-      )
+      nav_panel_about,
+      nav_panel_map,
+      nav_panel_search,
+      nav_panel_taxonomy
     )
   )
+
 }
 
 #' Add external Resources to the Application
@@ -170,6 +54,7 @@ app_ui <- function(request) {
 #' @importFrom golem add_resource_path activate_js favicon bundle_resources
 #' @noRd
 golem_add_external_resources <- function() {
+
   add_resource_path(
     "www",
     app_sys("app/www")
@@ -179,9 +64,10 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "renal_evidence_map"
+      app_title = "Renal Evidence Map"
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()
   )
+
 }
