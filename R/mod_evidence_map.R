@@ -89,7 +89,7 @@ mod_evidence_map_ui <- function(id) {
         "Outlined squares highlight the papers from your selected cell."
       ),
       class = "bg-light"
-      ),
+    ),
     shiny::plotOutput(ns("waffle"))
   )
 
@@ -283,7 +283,7 @@ mod_evidence_map_server <- function(id, dat) {
 
       shiny::validate(
         shiny::need(
-          selected_years(),
+          input$select_years,
           message = "Select at least one publication year."
         )
       )
@@ -310,14 +310,14 @@ mod_evidence_map_server <- function(id, dat) {
 
       shiny::validate(
         shiny::need(
-          selected_years(),
+          input$select_years,
           message = "Select at least one publication year."
         )
       )
 
       shiny::validate(
         shiny::need(
-          selected_cell_coords(),
+          input$evidence_map_table_cells_selected,
           message = "Click a cell in the evidence map table."
         )
       )
@@ -355,14 +355,14 @@ mod_evidence_map_server <- function(id, dat) {
 
       shiny::validate(
         shiny::need(
-          selected_years(),
+          input$select_years,
           message = "Select at least one publication year."
         )
       )
 
       shiny::validate(
         shiny::need(
-          selected_years(),
+          input$evidence_map_table_cells_selected,
           message = "Click a cell in the evidence map table."
         )
       )
