@@ -37,7 +37,8 @@ mod_taxonomy_ui <- function(id) {
         ),
         bslib::accordion_panel(
           title = "High-level outcome categories",
-          shiny::textOutput(ns("taxonomy_high_level_preamble")),
+          shiny::uiOutput(ns("taxonomy_high_level_preamble")),
+          htmltools::p(),
           DT::DTOutput(ns("taxonomy_high_level_outcome"))
         )
       )
@@ -58,16 +59,12 @@ mod_taxonomy_server <- function(id, taxonomy) {
       taxonomy[["Theme categories"]] |> tabulate_taxonomy_table()
     })
 
-    output$taxonomy_topic <-DT::renderDT({
-      taxonomy[["Topic categories"]] |>
-        tidyr::replace_na(list("Category" = "")) |>
-        tabulate_taxonomy_table()
+    output$taxonomy_topic <- DT::renderDT({
+      taxonomy[["Topic categories"]] |> tabulate_taxonomy_table()
     })
 
     output$taxonomy_setting <- DT::renderDT({
-      taxonomy[["Setting"]] |>
-        tidyr::replace_na(list("Description" = "–")) |>
-        tabulate_taxonomy_table()
+      taxonomy[["Setting"]] |> tabulate_taxonomy_table()
     })
 
     output$taxonomy_evidence_type <- DT::renderDT({
@@ -78,8 +75,8 @@ mod_taxonomy_server <- function(id, taxonomy) {
       taxonomy[["Clinical conditions"]] |> tabulate_taxonomy_table()
     })
 
-    output$taxonomy_high_level_preamble <- shiny::renderText({
-      taxonomy[["High-level outcome preamble"]]
+    output$taxonomy_high_level_preamble <- shiny::renderUI({
+      htmltools::HTML(taxonomy[["High-level outcome preamble"]])
     })
 
     output$taxonomy_high_level_outcome <- DT::renderDT({

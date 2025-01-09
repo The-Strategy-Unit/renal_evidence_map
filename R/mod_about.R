@@ -17,7 +17,7 @@ mod_about_ui <- function(id) {
       src = "www/tsu_logo_black_screen_transparent.png",
       style = "height:91px;width:108px"
     ),
-    shiny::textOutput(ns("intro"))
+    shiny::uiOutput(ns("intro"))
   )
 
   card_how_to <- bslib::card(
@@ -57,8 +57,8 @@ mod_about_server <- function(id, pinned_data) {
 
     ns <- session$ns
 
-    output$intro <- shiny::renderText({
-      get_intro(pinned_data)
+    output$intro <- shiny::renderUI({
+      htmltools::HTML(get_intro(pinned_data))
     })
 
   })
