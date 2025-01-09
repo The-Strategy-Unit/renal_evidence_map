@@ -66,14 +66,30 @@ mod_evidence_map_ui <- function(id) {
   card_evidence_map_table <- bslib::card(
     id = "card_evidence_map_table",
     full_screen = TRUE,
-    bslib::card_header("Evidence map", class = "bg-light"),
+    bslib::card_header(
+      "Evidence map",
+      bslib::tooltip(
+        bsicons::bs_icon("info-circle"),
+        "Count of papers for your selected years, split by your selected categories.",
+        "Click a cell to populate the waffle chart and filtered publications table."
+      ),
+      class = "bg-light",
+    ),
     DT::DTOutput(ns("evidence_map_table"))
   )
 
   card_waffle <- bslib::card(
     id = "card_waffle",
     full_screen = TRUE,
-    bslib::card_header("Waffle chart", class = "bg-light"),
+    bslib::card_header(
+      "Waffle chart",
+      bslib::tooltip(
+        bsicons::bs_icon("info-circle"),
+        "Click a cell in the evidence map to visualise the counts from that row, coloured by the column category.",
+        "Outlined squares highlight the papers from your selected cell."
+      ),
+      class = "bg-light"
+      ),
     shiny::plotOutput(ns("waffle"))
   )
 
@@ -82,6 +98,10 @@ mod_evidence_map_ui <- function(id) {
     full_screen = TRUE,
     bslib::card_header(
       "Filtered publications",
+      bslib::tooltip(
+        bsicons::bs_icon("info-circle"),
+        "Click a cell in the evidence map to view information about the papers in that selection."
+      ),
       class = "bg-light"
     ),
     DT::DTOutput(ns("filtered_table"))
