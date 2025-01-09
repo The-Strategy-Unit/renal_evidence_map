@@ -14,8 +14,8 @@ mod_taxonomy_ui <- function(id) {
       id = "card_taxonomy",
       htmltools::h2("Theme categories"),
       shiny::tableOutput(ns("taxonomy_theme")),
-      htmltools::h2("Focus categories"),
-      shiny::tableOutput(ns("taxonomy_focus")),
+      htmltools::h2("Topic categories"),
+      shiny::tableOutput(ns("taxonomy_topic")),
       htmltools::h2("Setting"),
       shiny::tableOutput(ns("taxonomy_setting")),
       htmltools::h2("Evidence type"),
@@ -42,8 +42,8 @@ mod_taxonomy_server <- function(id, taxonomy) {
       taxonomy[["Theme categories"]]
     })
 
-    output$taxonomy_focus <- shiny::renderTable({
-      taxonomy[["Focus categories"]] |>
+    output$taxonomy_topic <- shiny::renderTable({
+      taxonomy[["Topic categories"]] |>
         tidyr::replace_na(list("Category" = ""))
     })
 

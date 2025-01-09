@@ -231,7 +231,7 @@ mod_evidence_map_server <- function(id, dat) {
     # Observers
 
     all_categories <- c(
-      "Focus (simplified)" = "focus_simplified",  # row category default
+      "Topic" = "topic",  # row category default
       "Type of evidence" = "type_of_evidence",  # column category default
       "High level outcomes" = "high_level_outcomes"
     )

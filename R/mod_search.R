@@ -31,7 +31,7 @@ mod_search_server <- function(id, dat) {
 
       dat_prepared <- dat |>
         dplyr::rename(  # because the waffle errored unless dat names were changed
-          "Focus (simplified)" = "focus_simplified",
+          "Topic" = "topic",
           "Type of evidence" = "type_of_evidence",
           "High level outcomes" = "high_level_outcomes"
         ) |>
@@ -43,8 +43,8 @@ mod_search_server <- function(id, dat) {
               "Journal",
               "Type of evidence",
               "High level outcomes",
-              "Focus of the paper",
-              "Focus (simplified)",
+              "Topic (high level)",
+              "Topic",
               "Setting",
             ),
             factor  # allows discrete dropdown in datatable

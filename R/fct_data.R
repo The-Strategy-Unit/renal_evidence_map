@@ -26,7 +26,7 @@ get_evidence_data <- function(pinned_data) {
       # Categories
       "Type of evidence",
       "High level outcomes",
-      "Focus of the paper",
+      "Topic (high level)" = "Focus of the paper",
       # Additional variables
       "Outcomes",
       "Study design",
@@ -34,11 +34,11 @@ get_evidence_data <- function(pinned_data) {
       "Population"
     ) |>
     dplyr::mutate(
-      `Focus (simplified)` = stringr::str_remove_all(
-        `Focus of the paper`,
+      `Topic` = stringr::str_remove_all(
+        `Topic (high level)`,
         "\\s*\\(.*?\\)"  # remove leading spaces, parens, anything inside
       ),
-      .after = "Focus of the paper"
+      .after = `Topic (high level)`
     ) |>
     dplyr::mutate(
       `High level outcomes` = dplyr::if_else(
@@ -67,7 +67,7 @@ get_taxonomy_tables <- function(pinned_data) {
 
   taxonomy_list <- list(
     `Theme categories` = about_raw[8:14, 1:2],
-    `Focus categories` = about_raw[16:29, 1:3],
+    `Topic categories` = about_raw[16:29, 1:3],
     `Setting` = about_raw[31:40, 1:2],
     `Evidence type` = about_raw[42:43, 1:2],
     `Clinical conditions` = about_raw[45:47, 1:2],
@@ -79,7 +79,7 @@ get_taxonomy_tables <- function(pinned_data) {
     taxonomy_list[names(taxonomy_list) != "High-level outcome preamble"] |>
     purrr::map(\(x) dplyr::rename(x, "Category" = 1, "Description" = 2))
 
-  taxonomy_list[["Focus categories"]] <- taxonomy_list[["Focus categories"]] |>
+  taxonomy_list[["Topic categories"]] <- taxonomy_list[["Topic categories"]] |>
     dplyr::rename("Subcategory" = 2, "Description" = 3)
 
   taxonomy_list
