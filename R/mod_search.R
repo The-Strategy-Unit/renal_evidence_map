@@ -31,11 +31,11 @@ mod_search_server <- function(id, dat) {
 
       dat_prepared <- dat |>
         dplyr::rename(  # because the waffle errored unless dat names were changed
-          "Focus (simplified)" = "focus_simplified",
+          "Topic" = "topic",
           "Type of evidence" = "type_of_evidence",
           "High level outcomes" = "high_level_outcomes"
         ) |>
-        dplyr::select(-"Abstract") |>
+        dplyr::select(-c("Unique reference number", "Abstract")) |>
         dplyr::mutate(
           dplyr::across(
             c(
@@ -43,8 +43,8 @@ mod_search_server <- function(id, dat) {
               "Journal",
               "Type of evidence",
               "High level outcomes",
-              "Focus of the paper",
-              "Focus (simplified)",
+              "Topic (high level)",
+              "Topic",
               "Setting",
             ),
             factor  # allows discrete dropdown in datatable
@@ -58,9 +58,14 @@ mod_search_server <- function(id, dat) {
           rownames = FALSE,
           selection = "none",
           escape = FALSE,
-          filter = list(position = "top"),
-          extensions = "Buttons",
-          options = list(search = list(regex = TRUE))
+          filter = list(
+            position = "top",
+            clear = FALSE  # disable 'clear' buttons
+          ),
+          options = list(
+            search = list(regex = TRUE),
+            order = list(list(1, "desc"))
+          )
         )
 
     })

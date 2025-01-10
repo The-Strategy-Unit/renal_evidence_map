@@ -16,7 +16,7 @@ app_server <- function(input, output, session) {
     dplyr::rename(  # the waffle errors without this
       "type_of_evidence" = "Type of evidence",
       "high_level_outcomes" = "High level outcomes",
-      "focus_simplified" = "Focus (simplified)"
+      "topic" = "Topic"
     )
 
   taxonomy <- get_taxonomy_tables(pinned_data)

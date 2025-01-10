@@ -66,14 +66,30 @@ mod_evidence_map_ui <- function(id) {
   card_evidence_map_table <- bslib::card(
     id = "card_evidence_map_table",
     full_screen = TRUE,
-    bslib::card_header("Evidence map", class = "bg-light"),
+    bslib::card_header(
+      "Evidence map",
+      bslib::tooltip(
+        bsicons::bs_icon("info-circle"),
+        "Count of papers for your selected years, split by your selected categories.",
+        "Click a cell to populate the waffle chart and filtered publications table."
+      ),
+      class = "bg-light",
+    ),
     DT::DTOutput(ns("evidence_map_table"))
   )
 
   card_waffle <- bslib::card(
     id = "card_waffle",
     full_screen = TRUE,
-    bslib::card_header("Waffle chart", class = "bg-light"),
+    bslib::card_header(
+      "Waffle chart",
+      bslib::tooltip(
+        bsicons::bs_icon("info-circle"),
+        "Click a cell in the evidence map to visualise the counts from that row, coloured by the column category.",
+        "Outlined squares highlight the papers from your selected cell."
+      ),
+      class = "bg-light"
+    ),
     shiny::plotOutput(ns("waffle"))
   )
 
@@ -82,6 +98,10 @@ mod_evidence_map_ui <- function(id) {
     full_screen = TRUE,
     bslib::card_header(
       "Filtered publications",
+      bslib::tooltip(
+        bsicons::bs_icon("info-circle"),
+        "Click a cell in the evidence map to view information about the papers in that selection."
+      ),
       class = "bg-light"
     ),
     DT::DTOutput(ns("filtered_table"))
@@ -107,88 +127,6 @@ mod_evidence_map_ui <- function(id) {
       )
     )
   )
-
-  # shiny::tagList(
-  #   bslib::card(
-  #     id = "card_evidence_map",
-  #     bslib::layout_sidebar(
-  #       sidebar = bslib::sidebar(
-  #         open = TRUE,
-  #         shiny::selectInput(
-  #           inputId = ns("select_row"),
-  #           label = bslib::tooltip(
-  #             trigger = list(
-  #               "Select row category",
-  #               bsicons::bs_icon("info-circle")
-  #             ),
-  #             "The grouping category to show in the rows of the evidence map."
-  #           ),
-  #           choices = NULL,
-  #           selected = NULL,
-  #           multiple = FALSE
-  #         ),
-  #         shiny::selectInput(
-  #           inputId = ns("select_column"),
-  #           label = bslib::tooltip(
-  #             trigger = list(
-  #               "Select column category",
-  #               bsicons::bs_icon("info-circle")
-  #             ),
-  #             "The grouping category to show in the columns of the evidence map."
-  #           ),
-  #           choices = NULL,
-  #           selected = NULL,
-  #           multiple = FALSE
-  #         ),
-  #         shiny::selectInput(
-  #           inputId = ns("select_years"),
-  #           label = bslib::tooltip(
-  #             trigger = list(
-  #               "Select years",
-  #               bsicons::bs_icon("info-circle")
-  #             ),
-  #             "Filter for evidence from selected years. Use the buttons below to select or clear all years."
-  #           ),
-  #           choices = NULL,
-  #           selected = NULL,
-  #           multiple = TRUE,
-  #         ),
-  #         shiny::actionButton(
-  #           inputId = ns("button_years_all"),
-  #           label = "Select all"
-  #         ),
-  #         shiny::actionButton(
-  #           inputId = ns("button_years_clear"),
-  #           label = "Clear"
-  #         )
-  #       ),
-  #       bslib::layout_column_wrap(
-  #         bslib::card(
-  #           id = "card_evidence_map_table",
-  #           full_screen = TRUE,
-  #           bslib::card_header("Evidence map", class = "bg-light"),
-  #           DT::DTOutput(ns("evidence_map_table"))
-  #         ),
-  #         bslib::card(
-  #           id = "card_waffle",
-  #           full_screen = TRUE,
-  #           bslib::card_header("Waffle chart", class = "bg-light"),
-  #           shiny::plotOutput(ns("waffle"))
-  #         )
-  #       ),
-  #       bslib::card(
-  #         id = "card_filtered_table",
-  #         full_screen = TRUE,
-  #         bslib::card_header(
-  #           "Filtered publications",
-  #           class = "bg-light"
-  #         ),
-  #         DT::DTOutput(ns("filtered_table"))
-  #       )
-  #     )
-  #   )
-  # )
-
 
 }
 
@@ -231,7 +169,7 @@ mod_evidence_map_server <- function(id, dat) {
     # Observers
 
     all_categories <- c(
-      "Focus (simplified)" = "focus_simplified",  # row category default
+      "Topic" = "topic",  # row category default
       "Type of evidence" = "type_of_evidence",  # column category default
       "High level outcomes" = "high_level_outcomes"
     )
@@ -345,7 +283,7 @@ mod_evidence_map_server <- function(id, dat) {
 
       shiny::validate(
         shiny::need(
-          selected_years(),
+          input$select_years,
           message = "Select at least one publication year."
         )
       )
@@ -372,14 +310,14 @@ mod_evidence_map_server <- function(id, dat) {
 
       shiny::validate(
         shiny::need(
-          selected_years(),
+          input$select_years,
           message = "Select at least one publication year."
         )
       )
 
       shiny::validate(
         shiny::need(
-          selected_cell_coords(),
+          input$evidence_map_table_cells_selected,
           message = "Click a cell in the evidence map table."
         )
       )
@@ -417,14 +355,14 @@ mod_evidence_map_server <- function(id, dat) {
 
       shiny::validate(
         shiny::need(
-          selected_years(),
+          input$select_years,
           message = "Select at least one publication year."
         )
       )
 
       shiny::validate(
         shiny::need(
-          selected_years(),
+          input$evidence_map_table_cells_selected,
           message = "Click a cell in the evidence map table."
         )
       )
