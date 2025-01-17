@@ -73,7 +73,7 @@ get_taxonomy_tables <- function(pinned_data) {
     "Setting"                       = about_raw[31:40, 1:2],
     "Evidence type"                 = about_raw[42:43, 1:2],
     "Clinical conditions"           = about_raw[45:47, 1:2],
-    "High-level outcome categories" = about_raw[50:66, 1:2]
+    "High-level outcome categories" = about_raw[50:61, 1:2]
   )
 
   taxonomy_tables <- taxonomy_tables |>
