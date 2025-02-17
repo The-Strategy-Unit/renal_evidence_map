@@ -2,30 +2,29 @@
 
 ## About
 
-Evidence maps are a way of visually displaying the body of literature in a specific field in order to show gaps in evidence or study characteristics. 
+Evidence maps are a way to visually display the body of literature in a specific field in order to show gaps in evidence or study characteristics. 
 
-This shiny application will allow for the interactive exploration of the literature through tools such as evidence maps and text searching. 
-
-The application currently uses a dataset containing information about each evidence, such as author, publication date, and study characteristics. This information is then used to create an evidence map of all of the evidence as well as a free text search in order to search the evidence in the dataset by their title or author.
-
-This app was originally built off of [an evidence map for the New Hospital Programme](https://github.com/The-Strategy-Unit/nhp_evidence_maps).
-
-Future plans for this application are:
-
-- To extract keywords from literature within the dataset
-- To allow the user to pull additional literature into the application
-- To allow the user to download literature within the dataset
-- To have an application that can be repurposed to work with evidence from a range of different fields.
+This repository contains a Shiny app that allows interactive exploration of evidence that supports renal-services modelling.
+The user can select from different categories and years to present a table and chart of the relevant papers.
+There is also a table of information about all papers that can be filtered and searched.
 
 ## Developer notes
 
-<details><summary>Click for detail.</summary>
+### Deploy
+
+To re-deploy the app to Connect, run the `deployApp()` call in `dev/03_deploy.R`.
+This step will read the unique `appId` from the `rsconnect/` folder in the project root.
+You won't have an `rsconnect/` folder if you haven't deployed this app before, so you'll have to write in the app ID manually.
+It can be found under 'Content ID' in the Settings > Info menu after you log in to Posit Connect and view the app.
 
 ### Update pinned data
 
-The underlying data for this app can be updated independently of the app. The data is stored as a 'pin' on Posit Connect. The app will read the data from the pin using [{pins}](https://pins.rstudio.com/) when the user reaches the app. You can overwrite the existing pin and it will create a new version; you can see and revert to earlier versions of the pin if needed.
+The underlying data for this app is a spreadsheet, tabs of which are extracted and stored as a 'pin' on Posit Connect.
+The app reads data from the pin using [the {pins} package](https://pins.rstudio.com/).
+You can overwrite the existing pin and it will create a new version; you can see and revert to earlier versions of the pin if needed.
 
-This is some illustrative code to update the pinned data:
+Below is some illustrative code to update the pinned data.
+You must have access to and permissions for Posit Connect to be able to run this code.
 
 ``` r
 # Connect to board
@@ -37,7 +36,7 @@ board |> pins::pin_exists(pin_name)  # logical
 board |> pins::pin_read(pin_name) |> str(1)  # list structure
 board |> pins::pin_versions(pin_name)  # active and past versions
 
-# Read spreadsheet into list
+# Read new version of spreadsheet into list
 
 file <- "spreadsheet.xlsx"  # path to local copy of evidence map spreadsheet
 sheet_names <- readxl::excel_sheets(file)[1:2]  # 'About this map' and 'Datasheet' tabs
@@ -54,7 +53,7 @@ board |> pins::pin_write(
   pin_name,
   metadata = list(
     # update the notes (version/date from the 'About this map' tab)
-    notes = "Version X, Month YYYY, file 'spreadsheet.xlsx'"
+    notes = "Version X, Month YYYY, file 'spreadsheet.xlsx'"  # leave a note
   ),
   type = "rds"  # otherwise it may autodetect json
 )
@@ -63,11 +62,3 @@ board |> pins::pin_write(
 board |> pins::pin_versions(pin_name)  # should see new version
 pins::pin_meta(board, pin_name)[["user"]][["notes"]]  # custom notes metadata
 ```
-
-### Deploy
-
-Run the `deployApp()` call in `dev/03_deploy.R`. If the `appID` is not picked up from `rsconnect::deployments()`, then you'll have to write it in manually. It can be found in the Settings > Info menu after you log in to Posit Connect and view the app (under 'Content ID').
-
-You can read more about [deploying to Posit Connect](https://docs.posit.co/connect/how-to/publish-shiny-app/) and [deploying a Golem app](https://engineering-shiny.org/deploy.html).
-
-</details>
