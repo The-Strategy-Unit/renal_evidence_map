@@ -5,10 +5,18 @@
 Evidence maps are a way to visually display the body of literature in a specific field in order to show gaps in evidence or study characteristics. 
 
 This repository contains a Shiny app that allows interactive exploration of evidence that supports renal-services modelling.
+This work is part of the larger New Hospital Programme (NHP).
+
 The user can select from different categories and years to present a table and chart of the relevant papers.
 There is also a table of information about all papers that can be filtered and searched.
 
 ## Developer notes
+
+### Development
+
+This is [a {golem} app](https://thinkr-open.github.io/golem/).
+Code is arranged into modules in `R/`, with one file per section of the app.
+To run the app for development purposes, source the contents of `dev/run_dev.R`.
 
 ### Deploy
 
