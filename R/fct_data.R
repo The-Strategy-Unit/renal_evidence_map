@@ -22,7 +22,7 @@ get_evidence_data <- function(pinned_data) {
       "Title",
       "Journal",
       "Abstract",
-      "Link" = "DOI",
+      "URL" = "DOI",
       # Categories
       "Type of evidence",
       "High level outcomes",
@@ -41,6 +41,10 @@ get_evidence_data <- function(pinned_data) {
       .after = `Topic (high level)`
     ) |>
     dplyr::mutate(
+      Link = paste0("<a href='", URL, "' target = 'new'>Link</a>"),
+      .after = "URL"
+    ) |>
+    dplyr::mutate(
       `High level outcomes` = dplyr::if_else(
         is.na(`High level outcomes`),
         "Uncategorised",
@@ -50,8 +54,7 @@ get_evidence_data <- function(pinned_data) {
         is.na(`Type of evidence`),
         "Uncategorised",
         `Type of evidence`
-      ),
-      Link = paste0("<a href='", Link, "' target = 'new'>", "Link", "</a>")
+      )
     )
 
 }
