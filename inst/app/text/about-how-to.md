@@ -1,5 +1,6 @@
-* To use the map, you can browse by theme by clicking on the 'Evidence Map' tab on the menu bar.
-* You’ll see a table showing a range of themes in the rows and different types of evidence in the columns (primary studies and secondary studies).
-* You can change the column display to show high level outcomes by theme and you can change the row display to show types of evidence – simply select the appropriate option (row or column category) on the left hand side of the screen.
-* You can find descriptions of the themes by clicking on the 'Taxonomy' tab on the menu bar.
-* Alternatively, you can search for words by clicking on the 'Search' tab on the menu bar. Type in the search box on the right hand side of the screen e.g. 'health check' and press <kbd>Enter</kbd>.
+* In the menu bar, click on the:
+  - 'Evidence Map' tab to inspect evidence maps by topic, outcomes, type of evidence and year of publication
+  - 'Search' tab to filter, search and download a CSV of the collated literature (try searching 'health check', for example)
+  - 'Taxonomy' tab to find explanations of the categories used to organise the papers
+* Click the 'Expand' button in the lower-right of each box to expand it to fill your browser window.
+* Information is provided throughout the app if you hover over each circular 'i' icon.
