@@ -37,7 +37,7 @@ app_ui <- function(request) {
         "Search",
         bsicons::bs_icon("info-circle")
       ),
-      "A searchable and filterable table of all papers in the underlying dataset."
+      "Search, filter and download a table of all papers in the underlying dataset."
     ),
     mod_search_ui("mod_search")
   )
