@@ -1,9 +1,10 @@
 Package: renal.evidence.map
 Title: Renal Evidence Map App
-Version: 0.2.2
+Version: 0.2.3
 Authors@R: c(
     person("Matt", "Dray", , "matt.dray@nhs.net", role = c("cre", "aut")),
-    person("Ozayr", "Mohammed", , "ozayr.mohammed@nhs.net", role = "aut")
+    person("Ozayr", "Mohammed", , "ozayr.mohammed@nhs.net", role = "aut"),
+    person("Rhian", "Davies", , "rhian.davies25@nhs.net", role = "ctb")
   )
 Description: A Shiny app for exploring renal evidence.
 License: MIT + file LICENSE

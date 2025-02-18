@@ -22,7 +22,9 @@
 
 # Files to retain
 !favicon.ico
+!nhp_logo.png
 !tsu_logo_black_screen_transparent.png
+!search-protocol.pdf
 
 # History files
 .Rhistory

@@ -58,17 +58,29 @@ mod_search_server <- function(id, dat) {
           rownames = FALSE,
           selection = "none",
           escape = FALSE,
+          extensions = "Buttons",
           filter = list(
             position = "top",
             clear = FALSE  # disable 'clear' buttons
           ),
           options = list(
+            dom = "Bftipr",
             search = list(regex = TRUE),
-            order = list(list(1, "desc"))
+            order = list(list(1, "desc")),
+            columnDefs = list(
+              list(visible = FALSE, targets = "URL") # hide but show in doanload
+            ),
+            buttons = list(
+              list(
+                extend = "csv",
+                text = "Download CSV",
+                title = "renal-evidence-map_data"
+              )
+            )
           )
         )
 
-    })
+    }, server = FALSE)  # to allow download of whole table
 
   })
 }

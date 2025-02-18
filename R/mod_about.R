@@ -13,9 +13,16 @@ mod_about_ui <- function(id) {
     id = "card_intro",
     full_screen = TRUE,
     bslib::card_header("Introduction", class = "bg-light"),
-    tags$img(
-      src = "www/tsu_logo_black_screen_transparent.png",
-      style = "height:91px;width:108px"
+    shiny::div(
+      style = "display:flex;",  # images side-by-side
+      tags$img(
+        src = "www/nhp_logo.png",
+        style = "height:91px;width:151px;padding-right:10px;"
+      ),
+      tags$img(
+        src = "www/tsu_logo_black_screen_transparent.png",
+        style = "height:91px;width:108px"
+      )
     ),
     shiny::uiOutput(ns("intro"))
   )
@@ -25,6 +32,20 @@ mod_about_ui <- function(id) {
     full_screen = TRUE,
     bslib::card_header("How to use", class = "bg-light"),
     md_file_to_html("app", "text", "about-how-to.md")
+  )
+
+  card_methods <- bslib::card(
+    id = "card_methods",
+    full_screen = TRUE,
+    bslib::card_header("Methodology", class = "bg-light"),
+    shiny::tags$p(
+      "You can",
+      shiny::tags$a(
+        "download a PDF document",
+        href = "www/search-protocol.pdf"
+      ),
+      "that details the search protocol and strategy for the gathered evidence."
+    )
   )
 
   card_meta <- bslib::card(
@@ -42,6 +63,7 @@ mod_about_ui <- function(id) {
         width = 1,
         heights_equal = "row",
         card_how_to,
+        card_methods,
         card_meta
       )
     )
