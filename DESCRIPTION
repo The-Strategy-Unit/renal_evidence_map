@@ -6,7 +6,9 @@ Authors@R: c(
     person("Ozayr", "Mohammed", , "ozayr.mohammed@nhs.net", role = "aut"),
     person("Rhian", "Davies", , "rhian.davies25@nhs.net", role = "ctb")
   )
-Description: A Shiny app for exploring renal evidence.
+Description: An app to allow exploration of the evidence map for Renal
+    Service Modelling. Built in conjunction with the Evidence and
+    Knowledge Team.
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
