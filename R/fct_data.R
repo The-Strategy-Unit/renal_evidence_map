@@ -1,6 +1,9 @@
-get_pinned_data <- function(pin_name) {
+get_pinned_data <- function(
+    pin_name,
+    server_name = "https://connect.strategyunitwm.nhs.uk/"
+) {
 
-  board <- pins::board_connect()
+  board <- pins::board_connect(server = server_name)
   pin_exists <- pins::pin_exists(board, pin_name)
 
   if (!pin_exists) stop(glue::glue("The pin {pin_name} could not be found"))
