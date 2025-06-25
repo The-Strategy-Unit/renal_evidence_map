@@ -1,11 +1,16 @@
 get_pinned_data <- function(
     pin_name,
-    server_name = "https://connect.strategyunitwm.nhs.uk/"
+    server_name = Sys.getenv("CONNECT_SERVER"),
+    server_key = Sys.getenv("CONNECT_API_KEY")
 ) {
 
-  board <- pins::board_connect(server = server_name)
-  pin_exists <- pins::pin_exists(board, pin_name)
+  board <- pins::board_connect(
+    auth = "manual",
+    server = server_name,
+    key = server_key
+  )
 
+  pin_exists <- pins::pin_exists(board, pin_name)
   if (!pin_exists) stop(glue::glue("The pin {pin_name} could not be found"))
   if (pin_exists) pins::pin_read(board, pin_name)
 
