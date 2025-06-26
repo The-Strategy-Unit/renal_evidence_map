@@ -14,16 +14,22 @@ There is also a table of information about all papers that can be filtered and s
 
 ### Development
 
-This is [a {golem} app](https://thinkr-open.github.io/golem/).
+#### Structure
+
+This is [a Shiny app](https://shiny.posit.co/) written with [the {golem} framework](https://thinkr-open.github.io/golem/).
 Code is arranged into modules in `R/`, with one file per section of the app.
+
+#### Run locally
+
+You need an authorised Posit Connect account to read data from the Strategy Unit's server.
+Create an `.Renviron` in the project root containing values for the keys found in `.Renviron.example`.
+Ask a member of the Data Science team if you need assistance.
+
 To run the app for development purposes, source the contents of `dev/run_dev.R`.
 
 ### Deploy
 
-To re-deploy the app to Connect, run the `deployApp()` call in `dev/03_deploy.R`.
-This step will read the unique `appId` from the `rsconnect/` folder in the project root.
-You won't have an `rsconnect/` folder if you haven't deployed this app before, so you'll have to write in the app ID manually.
-It can be found under 'Content ID' in the Settings > Info menu after you log in to Posit Connect and view the app.
+To re-deploy the app to Connect, run the `deploy()` call in `dev/03_deploy.R`.
 
 ### Update pinned data
 

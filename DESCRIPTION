@@ -1,6 +1,6 @@
 Package: renal.evidence.map
 Title: Renal Evidence Map App
-Version: 0.2.3
+Version: 0.2.4
 Authors@R: c(
     person("Matt", "Dray", , "matt.dray@nhs.net", role = c("cre", "aut")),
     person("Ozayr", "Mohammed", , "ozayr.mohammed@nhs.net", role = "aut"),
